@@ -1,13 +1,22 @@
 import React from "react";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./TodoApp.css";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+// import {ReactRouterdom } from '../react-router-dom'
 export default function TodoApp() {
   return (
     <div className="TodoApp">
-      Todo Management Application
-      <Logincomponent />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Logincomponent />}></Route>
+          <Route path="/login" element={<Logincomponent />}></Route>
+          <Route path="/welcome" element={<WelcomeComponent />}></Route>
+          <Route path="/error" element={<ErrorComponent/>}></Route>
+        </Routes>
+      </BrowserRouter>
+
+      {/* {/* <WelcomeComponent/> */}
     </div>
   );
 }
@@ -15,10 +24,12 @@ export default function TodoApp() {
 function Logincomponent() {
   const [username, setUserName] = useState("ravi");
 
-  const [password, setPassword] = useState("password");
-  
-  const[shwoSuccessMessage,setShowSuccessMessage]=useState(false);
-  const[shwoErrorMessage,setShowErrorMessage]=useState(false);
+  const [password, setPassword] = useState("dummy");
+
+  const [shwoSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [shwoErrorMessage, setShowErrorMessage] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleUsernameChange(event) {
     // console.log(event.target.value);
@@ -28,49 +39,51 @@ function Logincomponent() {
     // console.log(event.target.value);
     setPassword(event.target.value);
   }
-  function handleSubmit(){
-      if(username=="ravi" && password=="dummy"){
-           setShowSuccessMessage(true)
-           setShowErrorMessage(false)
-      }
-      else{
-        
-        setShowErrorMessage(true)
-        setShowSuccessMessage(false)
-      }
+  function handleSubmit() {
+    if (username == "ravi" && password == "dummy") {
+      setShowSuccessMessage(true);
+      setShowErrorMessage(false);
+      navigate("./welcome");
+    } else {
+      setShowErrorMessage(true);
+      setShowSuccessMessage(false);
+    }
   }
-  function SuccessMessageComponent(){
-    if(shwoSuccessMessage){
-      return(
-         <>
-         <div className="successMessage">Authenticated Successful</div>
-         </>
-      )
+  function SuccessMessageComponent() {
+    if (shwoSuccessMessage) {
+      return (
+        <>
+          <div className="successMessage">Authenticated Successful</div>
+        </>
+      );
+    } else {
+      return null;
     }
-    else{
-     return null;
+  }
+  function EroorMessageComponent() {
+    if (shwoErrorMessage) {
+      return (
+        <>
+          <div className="errorMessage">
+            Authentication Failed. Please check your credntials
+          </div>
+        </>
+      );
+    } else {
+      return null;
     }
- }
- function EroorMessageComponent(){
-    if(shwoErrorMessage){
-      return(
-         <>
-        <div className="errorMessage">Authentication Failed. Please check your credntials</div>
-    
-         </>
-      )
-    }
-    else{
-     return null;
-    }
- }
+  }
   return (
     <div className="Login">
+      {shwoSuccessMessage && (
+        <div className="successMessage">Authenticated Successful</div>
+      )}
+      {shwoErrorMessage && (
+        <div className="errorMessage">
+          Authentication Failed. Please check your credntials
+        </div>
+      )}
 
-    { shwoSuccessMessage &&  <div className="successMessage">Authenticated Successful</div>}
-    {shwoErrorMessage &&<div className="errorMessage">Authentication Failed. Please check your credntials</div>
-    }
-    
       <div className="LoginForm">
         <div>
           <label htmlFor="">UserName</label>
@@ -91,9 +104,7 @@ function Logincomponent() {
           />
         </div>
         <div>
-          <button type="button" name="login"
-          onClick={handleSubmit}
-          >
+          <button type="button" name="login" onClick={handleSubmit}>
             Login
           </button>
         </div>
@@ -103,5 +114,14 @@ function Logincomponent() {
 }
 
 function WelcomeComponent() {
-  return <div className="Welcome">Welcome Component</div>;
+  return <>welcome Component</>;
+}
+
+function ErrorComponent(){
+    return(
+        <>
+        your are working hard and 
+         <h3>Apologies for the 404 . Reach out to our team at AVC</h3>
+        </>
+    )
 }
