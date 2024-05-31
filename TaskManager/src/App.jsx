@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import TodoApp from './todo/TodoApp'
 import './App.css'
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-       <h4>Welcome to task manager</h4>
+     <TodoApp/>
     </>
   )
 }
